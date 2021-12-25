@@ -25,8 +25,30 @@ void getUserDate(string &name, long int &nic, string &address, double &initial_b
     cin >> initial_balance;
 }
 
-void goldenTable()
+// This Function will Generate the Random Number
+// The Random Number will be between 0 and 10
+int getRandomNumber()
 {
+    return rand() % 11;
+}
+
+// This Function will Generate the Random Players
+int generateRandomMultiPlayers()
+{
+    // Gerating Random Number (3 to 6)
+    int numberOfPlayers = (rand() % 4) + 3;
+    return numberOfPlayers;
+}
+// Generating Random Betting Amount (100 - 999)
+int getRandomBettingAmount()
+{
+    return rand() % 1001 + 100;
+}
+
+// Golden Table Game
+void goldenTable(int playerBalance)
+{
+    cout << "\n\n ----- Golden Table ------ \n\n";
     int winPlayersArray[10] = {0}; // This Array will contain the Winner's List
     // --------About winPlayersArray---------
     // This array is initalized with 0
@@ -37,16 +59,17 @@ void goldenTable()
 
     int input, bettingAmount;
     int totalPlayers = generateRandomMultiPlayers(); // Getting Total Random Number of Players
-    int WinningNumber = getRandomNumber();           // Setting Winning Number
     int playerNumber = rand() % totalPlayers + 1;    // Setting Player Number
     int userTable = rand() % totalPlayers + 1;       // Setting User Table
     totalPlayers += 1;                               // Includin 1 to Total Players to get the Total Players
 
     char choice = 'Y';
     // Here the Round Begain ....
-    do
+    for (int j = 0; j < 3; j++)
     {
-        cout << "Round Begins... \n";
+        int WinningNumber = getRandomNumber(); // Setting Winning Number
+
+        cout << "Round Begins... \n\n";
         cout << "You will be playing on Table No " << userTable << " with Player " << playerNumber << endl;
         cout << totalPlayers << endl;
         for (int i = 1; i <= totalPlayers; i++)
@@ -69,7 +92,7 @@ void goldenTable()
                 if (input == WinningNumber)
                 {
                     winPlayersArray[i] = 1;
-                    playerBalance += bettingAmount;
+                    playerBalance = playerBalance + (4 * bettingAmount);
                 }
                 else
                 {
@@ -97,7 +120,7 @@ void goldenTable()
         {
             if (winPlayersArray[i] == 1)
             {
-                cout << "Player " << i << " is Winner\n";
+                cout << "Player " << i << " Wins...\n";
                 anyWinner = true;
             }
         }
@@ -112,48 +135,24 @@ void goldenTable()
         cout << "Round Ends... \n\n\n";
         if (winPlayersArray[playerNumber] == 1)
         {
-            cout << "Congratulations… You have won…\n ";
+            cout << "Congratulations… You have won…\n";
         }
-        cout << "Your Remaining Balance is: " << playerBalance << "... \n";
-        if (winPlayersArray[playerNumber] == 1)
+        cout << "Your Remaining Balance is: " << playerBalance << "... \n\n\n";
+        if (j == 2)
         {
-            cout << "Do You want to play at Golden Table[Y/N]? ";
+            cout << "Do you want to play again? (Y/N)";
             cin >> choice;
-            if (choice == 'Y' || choice == 'y')
+            if (choice == 'Y')
             {
-                goldenTable();
-                choice = 'N';
+                j = 0;
             }
             else
             {
-                cout << "Do you want to Proceed on Simple Table [Y/N]? ";
-                cin >> choice;
+                cout << "Good Bye See you Again\n";
+                exit;
             }
         }
-        else
-        {
-            cout << "Do you want to Proceed[Y/N]? ";
-            cin >> choice;
-        }
-
-    } while (choice == 'Y' || choice == 'y');
-}
-// This Function will Generate the Random Number
-// The Random Number will be between 0 and 10
-int getRandomNumber()
-{
-    return rand() % 11;
-}
-int generateRandomMultiPlayers()
-{
-    // Gerating Random Number (3 to 6)
-    int numberOfPlayers = (rand() % 4) + 3;
-    return numberOfPlayers;
-}
-// Generating Random Betting Amount (100 - 999)
-int getRandomBettingAmount()
-{
-    return rand() % 1001 + 100;
+    }
 }
 
 void Game(int playerBalance)
@@ -169,7 +168,6 @@ void Game(int playerBalance)
 
     int input, bettingAmount;
     int totalPlayers = generateRandomMultiPlayers(); // Getting Total Random Number of Players
-    int WinningNumber = getRandomNumber();           // Setting Winning Number
     int playerNumber = rand() % totalPlayers + 1;    // Setting Player Number
     int userTable = rand() % totalPlayers + 1;       // Setting User Table
     totalPlayers += 1;                               // Includin 1 to Total Players to get the Total Players
@@ -178,9 +176,11 @@ void Game(int playerBalance)
     // Here the Round Begain ....
     do
     {
-        cout << "Round Begins... \n";
+        int WinningNumber = getRandomNumber(); // Setting Winning Number
+        winPlayersArray[10] = {0};
+
+        cout << "Round Begins... \n\n\n";
         cout << "You will be playing on Table No " << userTable << " with Player " << playerNumber << endl;
-        cout << totalPlayers << endl;
         for (int i = 1; i <= totalPlayers; i++)
         {
             if (i == playerNumber)
@@ -244,16 +244,16 @@ void Game(int playerBalance)
         cout << "Round Ends... \n\n\n";
         if (winPlayersArray[playerNumber] == 1)
         {
-            cout << "Congratulations… You have won…\n ";
+            cout << "Congratulations… You have won…\n\n\n ";
         }
-        cout << "Your Remaining Balance is: " << playerBalance << "... \n";
+        cout << "Your Remaining Balance is: " << playerBalance << "... \n\n";
         if (winPlayersArray[playerNumber] == 1)
         {
             cout << "Do You want to play at Golden Table[Y/N]? ";
             cin >> choice;
             if (choice == 'Y' || choice == 'y')
             {
-                goldenTable();
+                goldenTable(playerBalance);
                 choice = 'N';
             }
             else
